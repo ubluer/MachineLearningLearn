@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# kNN k邻近算法2阶
+# k Nearest Neighbors k邻近算法2阶
 
 from numpy import *
 
@@ -20,8 +20,7 @@ def classify0(in_x, data_set, labels, knn):
     sq_distances = sq_diff_mat.sum(axis=1)
     distances = sq_distances ** 0.5
     print('离样本距离', distances)
-    # noinspection PyTypeChecker
-    sorted_dist_indices = argsort(distances)
+    sorted_dist_indices = argsort(array(distances))
 
     class_count = {}
     for i in range(knn):
@@ -33,7 +32,18 @@ def classify0(in_x, data_set, labels, knn):
     return sorted_class_count
 
 
-test_group, test_labels = create_data_set()
-# k值取训练样本的一半
-result = classify0([0, 0], test_group, test_labels, round(len(test_group) / 2))
-print('k个邻近的分类频数', result)
+def file2matrix(filename):
+    number_of_eigenvalues = 3
+    fr = open(filename)
+    array_of_lines = fr.readlines()
+    number_of_lines = len(array_of_lines)
+    return_mat = zeros((number_of_lines, number_of_eigenvalues))
+    class_label_vector = []
+    index = 0
+    for line in array_of_lines:
+        line = line.strip()
+        list_from_line = line.split('\t')
+        return_mat[index, :] = list_from_line[0:number_of_eigenvalues]
+        class_label_vector.append(int(list_from_line[-1]))
+        index += 1
+    return return_mat, class_label_vector
