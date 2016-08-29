@@ -71,22 +71,3 @@ def auto_norm(data_set):
     norm_data_set = data_set - tile(min_values, (m, 1))
     norm_data_set = norm_data_set / tile(ranges, (m, 1))
     return norm_data_set, ranges, min_values
-
-
-def dating_class_test():
-    """
-    约会网站数据测试
-    """
-    ho_radio = 0.1
-    dating_data_mat, dating_labels = file2matrix('./data/datingTestSet2.txt')
-    norm_mat, ranges, min_values = auto_norm(dating_data_mat)
-    m = norm_mat.shape[0]
-    num_test_vectors = int(m * ho_radio)
-    error_count = 0.0
-    for i in range(num_test_vectors):
-        classifier_result = classify0(norm_mat[i, :], norm_mat[num_test_vectors:m, :],
-                                      dating_labels[num_test_vectors:m], 10)
-        print("the classifier came back with: %d, the ral answer is: %d" % (classifier_result, dating_labels[i]))
-        if classifier_result != dating_labels[i]:
-            error_count += 1.0
-    print("this total rate is: %f" % (error_count / float(num_test_vectors)))
