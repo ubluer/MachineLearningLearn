@@ -12,6 +12,13 @@ def create_data_set():
 
 
 def classify0(in_x, data_set, labels, knn):
+    """ kNN分类器
+    :param in_x: 输入实例
+    :param data_set: 训练样本
+    :param labels: 样本分类
+    :param knn: k邻近值
+    :return: 实例离样本距离
+    """
     data_set_size = data_set.shape[0]
     print('训练样本大小:', data_set_size)
     # 将输入扩充成 (样本大小*1)的矩阵,并计算该矩阵的元素与训练样本的差;
@@ -33,6 +40,10 @@ def classify0(in_x, data_set, labels, knn):
 
 
 def file2matrix(filename):
+    """ 从文件里读取数据集
+    :param filename: 文件路径
+    :return: 样本矩阵，分类向量
+    """
     number_of_eigenvalues = 3
     fr = open(filename)
     array_of_lines = fr.readlines()
