@@ -2,12 +2,6 @@
 from MLiA.ch2 import kNN
 
 test_group, test_labels = kNN.file2matrix('./data/datingTestSet2.txt')
-# Matplotlib 展示数据选择特征值
-
-# fig = pyplot.figure()
-# ax = fig.add_subplot(111)
-# ax.scatter(test_group[:, 1], test_group[:, 0], 15*array(test_labels), 15*array(test_labels))
-# pyplot.show()
 
 # 归一化数据
 norm_mat,ranges,min_values = kNN.auto_norm(test_group)
