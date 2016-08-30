@@ -20,7 +20,7 @@ def classify0(in_x, data_set, labels, knn):
     :return: 实例离样本距离
     """
     data_set_size = data_set.shape[0]
-    print('训练样本大小:', data_set_size)
+    # print('训练样本大小:', data_set_size)
     # 将输入扩充成 (样本大小*1)的矩阵,并计算该矩阵的元素与训练样本的差;
     diff_mat = tile(in_x, (data_set_size, 1)) - data_set
     sq_diff_mat = diff_mat ** 2
