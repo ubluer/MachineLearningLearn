@@ -9,5 +9,5 @@ M = {'A': 3, 'B': 2}
 SM = sorted(M.items(), key=lambda x: x[1])
 print(SM)
 
-B = zeros((4, 5,2))
-print(B)
+C = zeros((4, 5,2))
+print(C)
