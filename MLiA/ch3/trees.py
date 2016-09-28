@@ -25,7 +25,7 @@ def calc_shannon_ent(data_set):
 
 
 def create_data_set():
-    data_set = [[1, 1, 'yes'], [1, 0, 'no'], [0, 1, 'maybe'], [0, 0, 'no']]
+    data_set = [[1, 1, 'yes'], [1, 0, 'yes'], [0, 1, 'maybe'], [0, 0, 'no']]
     labels_set = ['xBox', 'PS4']
     return data_set, labels_set
 
@@ -43,14 +43,24 @@ def split_data_set(data_set, axis, value):
 def choose_best_feature_to_split(data_set):
     feature_size = len(data_set[0]) - 1
     base_entropy = calc_shannon_ent(data_set)
-    beat_info_gain = 0.0
+    best_info_gain = 0.0
     best_feature = -1
     for i in range(feature_size):
         # create unique classify 列表生成式
         feat_list = [example[i] for example in data_set]
         unique_val = set(feat_list)
         new_entropy = 0.0
+        for value in unique_val:
+            sub_data_set = split_data_set(data_set, i, value)
+            prob = len(sub_data_set) / float(len(data_set))
+            new_entropy += prob * calc_shannon_ent(sub_data_set)
+        info_gain = base_entropy - new_entropy
+        if info_gain > best_info_gain:
+            best_info_gain = info_gain
+            best_feature = i
+    return best_feature
 
 
 data, labels = create_data_set()
+print(choose_best_feature_to_split(data))
 print(calc_shannon_ent(data))
