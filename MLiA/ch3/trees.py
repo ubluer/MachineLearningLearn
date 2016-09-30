@@ -31,6 +31,9 @@ def create_data_set():
 
 
 def split_data_set(data_set, axis, value):
+    """
+    将数据矩阵data在axis列使用提取值为value的子项
+    """
     ret_data_set = []
     for feat_vec in data_set:
         if feat_vec[axis] == value:
@@ -41,6 +44,9 @@ def split_data_set(data_set, axis, value):
 
 
 def choose_best_feature_to_split(data_set):
+    """
+    计算每一列分割后的香农熵，取增加最多的
+    """
     feature_size = len(data_set[0]) - 1
     base_entropy = calc_shannon_ent(data_set)
     best_info_gain = 0.0
@@ -61,6 +67,41 @@ def choose_best_feature_to_split(data_set):
     return best_feature
 
 
+def majority_count(class_list):
+    """
+    投票选取class_list里最多的一项
+    """
+    class_count = {}
+    for vote in class_list:
+        if vote not in class_count.keys():
+            class_count[vote] = 0
+        class_count[vote] += 1
+    sorted_class_count = sorted(class_count.items, key=lambda x: x[1], reverse=True)
+    return sorted_class_count[0][0]
+
+
+def create_tree(data_set, labels):
+    """
+    递归计算决策树
+    """
+    class_list = [example[-1] for example in data_set]
+    if class_list.count(class_list[0]) == len(class_list):
+        return class_list[0]
+    if len(data_set[0]) == 1:
+        return majority_count(class_list)
+    best_feat = choose_best_feature_to_split(data_set)
+    best_feat_label = labels[best_feat]
+    my_tree = {best_feat_label: {}}
+    del (labels[best_feat])
+    feat_values = [example[best_feat] for example in data_set]
+    unique_values = set(feat_values)
+    for value in unique_values:
+        sub_labels = labels[:]
+        my_tree[best_feat_label][value] = create_tree(split_data_set(data_set,best_feat, value), sub_labels)
+    return my_tree
+
+
 data, labels = create_data_set()
 print(choose_best_feature_to_split(data))
 print(calc_shannon_ent(data))
+print(create_tree(data,labels))
