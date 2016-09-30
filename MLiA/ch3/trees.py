@@ -97,11 +97,18 @@ def create_tree(data_set, labels):
     unique_values = set(feat_values)
     for value in unique_values:
         sub_labels = labels[:]
-        my_tree[best_feat_label][value] = create_tree(split_data_set(data_set,best_feat, value), sub_labels)
+        my_tree[best_feat_label][value] = create_tree(split_data_set(data_set, best_feat, value), sub_labels)
     return my_tree
 
 
-data, labels = create_data_set()
-print(choose_best_feature_to_split(data))
-print(calc_shannon_ent(data))
-print(create_tree(data,labels))
+def classify(input_tree, feat_labels, test_vec):
+    first_str = list(input_tree.keys())[0]
+    second_dict = input_tree[first_str]
+    feat_index = feat_labels.index(first_str)
+    for key in second_dict.keys():
+        if test_vec[feat_index] == key:
+            if isinstance(second_dict, dict):
+                class_label = classify(second_dict[key], feat_labels, test_vec)
+            else:
+                class_label = second_dict[key]
+    return class_label
